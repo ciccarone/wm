@@ -14,6 +14,8 @@ defined( 'ABSPATH' ) || exit;
 	<header class="entry-header">
 
 		<h1><?php echo do_shortcode('[memorial_name type="full"]') ?></h1>
+		<p><?php echo do_shortcode('[memorial_time type="birthdate"]') ?> - <?php echo do_shortcode('[memorial_time type="deathdate"]') ?></p>
+    <p><?php echo do_shortcode('[memorial_time type="age"]') ?> years old</p>
 
 		<div class="entry-meta">
 

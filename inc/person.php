@@ -4,7 +4,6 @@
 class Person
 {
 
-    private $name = '';
 
     public function get_person_name( $atts )
     {
@@ -19,19 +18,58 @@ class Person
         return $field_name_return['full'];
       }
 
-      return $this->name;
     }
 
     private function process_person_name()
     {
       $field_name = get_field('name');
+
       foreach ($field_name['variations'] as $field_name_instance) {
+
         $field_name_return[$field_name_instance['type']] = $field_name_instance['text'];
+
       }
+
       return $field_name_return;
+    }
+
+
+    public function get_person_time( $atts )
+    {
+      $atts = shortcode_atts(
+          array(
+              'type' => 'age',
+          ), $atts, 'memorial_time' );
+
+      $field_time_return = SELF::process_person_time();
+
+      if ($atts['type'] == 'birthdate') {
+        return date_format($field_time_return['birthdate'], 'F j, Y');
+      }
+      if ($atts['type'] == 'deathdate') {
+        return date_format($field_time_return['deathdate'], 'F j, Y');
+      }
+      if ($atts['type'] == 'age') {
+        return date_diff(date_create(date_format($field_time_return['birthdate'], 'F j, Y')), date_create(date_format($field_time_return['deathdate'], 'F j, Y')))->y;
+      }
+
+    }
+
+    private function process_person_time()
+    {
+      $field_time = get_field('date');
+
+      foreach ($field_time['variations'] as $field_time_instance) {
+
+        $field_time_return[$field_time_instance['type']] = date_create_from_format('Ymd', $field_time_instance['date']);
+
+      }
+
+      return $field_time_return;
     }
 }
 
 $person = new Person;
 
 add_shortcode( 'memorial_name', array( $person, 'get_person_name' ) );
+add_shortcode( 'memorial_time', array( $person, 'get_person_time' ) );
