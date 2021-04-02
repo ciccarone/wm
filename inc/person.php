@@ -34,6 +34,33 @@ class Person
     }
 
 
+    public function get_person_about( $atts )
+    {
+      $atts = shortcode_atts(
+          array(
+              'type' => 'bio',
+          ), $atts, 'memorial_about' );
+
+      $field_about_return = SELF::process_person_about();
+
+      return $field_about_return[$atts['type']];
+
+    }
+
+    private function process_person_about()
+    {
+      $field_about = get_field('about');
+
+      foreach ($field_about['variations'] as $field_about_instance) {
+
+        $field_about_return[$field_about_instance['type']] = $field_about_instance['text'];
+
+      }
+
+      return $field_about_return;
+    }
+
+
     public function get_person_location( $atts )
     {
       $atts = shortcode_atts(
@@ -71,7 +98,8 @@ class Person
       $field_time_return = SELF::process_person_time();
 
       if (($atts['type'] == 'birthdate') || ($atts['type'] == 'deathdate')) {
-        return date_format($atts['type'], 'F j, Y');
+        return date_format($field_time_return[$atts['type']], 'F j, Y');
+        // return date_format($atts['type'], 'F j, Y');
       }
 
       if ($atts['type'] == 'age') {
@@ -99,3 +127,4 @@ $person = new Person;
 add_shortcode( 'memorial_name', array( $person, 'get_person_name' ) );
 add_shortcode( 'memorial_location', array( $person, 'get_person_location' ) );
 add_shortcode( 'memorial_time', array( $person, 'get_person_time' ) );
+add_shortcode( 'memorial_about', array( $person, 'get_person_about' ) );

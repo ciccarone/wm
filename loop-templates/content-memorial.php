@@ -19,6 +19,7 @@ defined( 'ABSPATH' ) || exit;
     <p>Born in <?php echo do_shortcode('[memorial_location type="birthplace"]') ?></p>
     <p>Lived in <?php echo do_shortcode('[memorial_location type="general"]') ?></p>
     <p>Died in <?php echo do_shortcode('[memorial_location type="deathplace"]') ?></p>
+    <p>Bio: <?php echo do_shortcode('[memorial_about type="bio"]') ?></p>
 
 		<div class="entry-meta">
 
