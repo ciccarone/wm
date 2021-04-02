@@ -16,6 +16,9 @@ defined( 'ABSPATH' ) || exit;
 		<h1><?php echo do_shortcode('[memorial_name type="full"]') ?></h1>
 		<p><?php echo do_shortcode('[memorial_time type="birthdate"]') ?> - <?php echo do_shortcode('[memorial_time type="deathdate"]') ?></p>
     <p><?php echo do_shortcode('[memorial_time type="age"]') ?> years old</p>
+    <p>Born in <?php echo do_shortcode('[memorial_location type="birthplace"]') ?></p>
+    <p>Lived in <?php echo do_shortcode('[memorial_location type="general"]') ?></p>
+    <p>Died in <?php echo do_shortcode('[memorial_location type="deathplace"]') ?></p>
 
 		<div class="entry-meta">
 

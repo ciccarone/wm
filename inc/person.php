@@ -34,6 +34,33 @@ class Person
     }
 
 
+    public function get_person_location( $atts )
+    {
+      $atts = shortcode_atts(
+          array(
+              'type' => 'birthplace',
+          ), $atts, 'memorial_location' );
+
+      $field_location_return = SELF::process_person_location();
+
+      return $field_location_return[$atts['type']];
+
+    }
+
+    private function process_person_location()
+    {
+      $field_location = get_field('location');
+
+      foreach ($field_location['variations'] as $field_location_instance) {
+
+        $field_location_return[$field_location_instance['type']] = $field_location_instance['text'];
+
+      }
+
+      return $field_location_return;
+    }
+
+
     public function get_person_time( $atts )
     {
       $atts = shortcode_atts(
@@ -43,12 +70,10 @@ class Person
 
       $field_time_return = SELF::process_person_time();
 
-      if ($atts['type'] == 'birthdate') {
-        return date_format($field_time_return['birthdate'], 'F j, Y');
+      if (($atts['type'] == 'birthdate') || ($atts['type'] == 'deathdate')) {
+        return date_format($atts['type'], 'F j, Y');
       }
-      if ($atts['type'] == 'deathdate') {
-        return date_format($field_time_return['deathdate'], 'F j, Y');
-      }
+
       if ($atts['type'] == 'age') {
         return date_diff(date_create(date_format($field_time_return['birthdate'], 'F j, Y')), date_create(date_format($field_time_return['deathdate'], 'F j, Y')))->y;
       }
@@ -72,4 +97,5 @@ class Person
 $person = new Person;
 
 add_shortcode( 'memorial_name', array( $person, 'get_person_name' ) );
+add_shortcode( 'memorial_location', array( $person, 'get_person_location' ) );
 add_shortcode( 'memorial_time', array( $person, 'get_person_time' ) );
